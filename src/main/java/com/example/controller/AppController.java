@@ -32,6 +32,7 @@ import com.example.modelService.UserService;
 import com.model.Policy;
 import com.model.PolicyOwned;
 import com.model.User;
+import com.model.UserLoginRequest;
 import com.model.UserPasswordResetRequest;
 import com.model.UserRegisterRequest;
 
@@ -74,16 +75,14 @@ public class AppController {
 //		}
 //		
 //		
-//		//USER
+//		//USER Login/Register/ForgetPassword
 		@Autowired
 		private UserService userService;
 		
-//		@GetMapping("/alluser")
-//		private List<User> getAllUsers() {
-//			List<User> userList = userService.findAll();
-//			System.out.println(userList);
-//			return userService.fetchAllUser();
-//		}
+		@PostMapping("/verifyUser")
+		private String verifyUser(@RequestBody UserLoginRequest user ) {
+			return userService.verifyUser(user);
+		}
 		
 		@PostMapping("/register")
 		private String createUser(@RequestBody UserRegisterRequest user) {
@@ -97,8 +96,8 @@ public class AppController {
 		}
 	
 //		//OFFER
-		@Autowired
-		private OfferService offerService;
+//		@Autowired
+//		private OfferService offerService;
 		
 //		@GetMapping("/alloffers")
 //		private List<Offers> getAllOffers(){

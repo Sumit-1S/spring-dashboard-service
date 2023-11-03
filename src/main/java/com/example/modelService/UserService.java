@@ -16,7 +16,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.model.Policy;
+import com.model.PolicyOwned;
 import com.model.User;
+import com.model.UserLoginRequest;
 import com.model.UserPasswordResetRequest;
 import com.model.UserRegisterRequest;
 
@@ -69,6 +71,27 @@ public class UserService {
 		}
 		
 		return userResponse.getBody();
+	}
+
+	public String verifyUser(UserLoginRequest user) {
+		String userServiceURL = "http://localhost:8000/loginService/login";
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String userResponse = null;
+		try {
+			String json = ow.writeValueAsString(user);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<String> request = new HttpEntity<String>(json, headers);
+			userResponse = restTemplate.postForObject(userServiceURL, request,String.class);
+			
+			System.out.println(user);
+			
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return userResponse;
 	}
 
 }
