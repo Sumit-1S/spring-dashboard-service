@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.modelService.DatabaseService;
-import com.example.modelService.OfferService;
+import com.example.modelService.DiscountService;
 import com.example.modelService.UserService;
+import com.model.Discount;
+import com.model.DiscountRegisterRequest;
 //import com.entity.Offers;
 //import com.entity.Promotion;
 //import com.entity.User;
@@ -96,22 +99,22 @@ public class AppController {
 		}
 	
 //		//OFFER
-//		@Autowired
-//		private OfferService offerService;
+		@Autowired
+		private DiscountService discountService;
 		
-//		@GetMapping("/alloffers")
-//		private List<Offers> getAllOffers(){
-//			List<Offers> offerList = offerRepo.findAll();
-//			System.out.println(offerList);
-//			return offerRepo.findAll();
-//		}
-//		
-//		@PostMapping("/createoffer")
-//		private Offers createOffer(@RequestBody Offers offer) {
-//			System.out.println(offer);
-//			return offerRepo.save(offer);
-//		}
-//		
+		@GetMapping("/getalldiscount/{policyId}")
+		private ArrayList<Discount> getAllOffers(@PathVariable Integer policyId){
+			ArrayList<Discount> offerList = discountService.findAllDiscount(policyId);
+			System.out.println(offerList);
+			return offerList;
+		}
+		
+		@PostMapping("/adddiscount")
+		private String addDiscount(@RequestBody DiscountRegisterRequest discount) {
+			System.out.println(discount);
+			return discountService.addDiscount(discount);
+		}
+		
 //		@GetMapping("/offerbyid/{id}")
 //		public Optional<Offers> getOfferById(@PathVariable int id) {
 //			return offerRepo.findById(id);
