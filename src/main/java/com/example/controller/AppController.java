@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.modelService.CartService;
 import com.example.modelService.DatabaseService;
 import com.example.modelService.DiscountService;
 import com.example.modelService.UserService;
+import com.model.CartEntity;
 import com.model.Discount;
 import com.model.DiscountRegisterRequest;
 //import com.entity.Offers;
@@ -34,6 +36,7 @@ import com.model.DiscountRegisterRequest;
 //import com.repository.UserRepository;
 import com.model.Policy;
 import com.model.PolicyOwned;
+import com.model.PolicyOwnedRequest;
 import com.model.User;
 import com.model.UserLoginRequest;
 import com.model.UserPasswordResetRequest;
@@ -115,21 +118,28 @@ public class AppController {
 			return discountService.addDiscount(discount);
 		}
 		
-//		@GetMapping("/offerbyid/{id}")
-//		public Optional<Offers> getOfferById(@PathVariable int id) {
-//			return offerRepo.findById(id);
-//		}
-//		
-//		@PutMapping("/updateoffer")
-//		public Offers updareOffer(@RequestBody Offers offer) {
-//			return offerRepo.save(offer);
-//		}
-//		
-//		@DeleteMapping("/deleteoffer/{id}")
-//		public ResponseEntity<HttpStatus> deleteOffer(@PathVariable int id) {
-//			offerRepo.deleteById(id);
-//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//		}
+		@DeleteMapping("/deleteoffer/{discountId}")
+		public String deleteOffer(@PathVariable Integer discountId) {
+			return discountService.deleteById(discountId);
+		}
+		
+		// Policy Cart
+		@Autowired
+		private CartService cartService;
+		
+		@GetMapping("/getcart/{clientUsername}")
+		private CartEntity getCartPolicy(@PathVariable String clientUsername){
+			CartEntity cartList = cartService.findPolicyByClient(clientUsername);
+			return cartList;
+		}
+		
+		@PostMapping("/purchasePolicy/{clientUsername}")
+		private String purchasePolicy(@PathVariable String clientUsername,@RequestBody PolicyOwnedRequest ownedRequest){
+			String response = cartService.purchasePolicy(clientUsername,ownedRequest);
+			return response;
+		}
+		
+		
 //		
 //		
 //		//FEEDBACK

@@ -20,4 +20,5 @@ public class Policy {
 	private String policyDesc;
 	private int duration;
 	private PolicyType policyType;
+	private Double amount;
 }

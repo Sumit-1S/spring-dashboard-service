@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,25 @@ public class DiscountService {
 		}
 		
 		return policyResponse;
+	}
+
+	public String deleteById(Integer discountId) {
+		String userServiceURL = "http://localhost:8020/discountService/deleteoffer/"+discountId;
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		ResponseEntity<String> userResponse = null;
+		try {
+			String json = ow.writeValueAsString(discountId);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<String> request = new HttpEntity<String>(json, headers);
+			userResponse = restTemplate.exchange(userServiceURL, HttpMethod.PUT, request, String.class);
+
+			System.out.println(discountId);
+			
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return userResponse.getBody();
 	}
 
 }
