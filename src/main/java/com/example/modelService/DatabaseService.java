@@ -65,6 +65,7 @@ public class DatabaseService {
 		Policy policyResponse = null;
 		try {
 			String json = ow.writeValueAsString(policy);
+			System.out.println(policy);
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			HttpEntity<String> request = new HttpEntity<String>(json, headers);

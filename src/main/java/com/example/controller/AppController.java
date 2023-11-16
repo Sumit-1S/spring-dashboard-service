@@ -44,6 +44,7 @@ import com.model.UserRegisterRequest;
 
 @RestController
 @RequestMapping("/home")
+@CrossOrigin("http://localhost:3002")
 public class AppController {
 		
 		//Policy
@@ -139,9 +140,6 @@ public class AppController {
 			return response;
 		}
 		
-		
-//		
-//		
 //		//FEEDBACK
 //		@Autowired
 //		private FeedbackRepository feedRepo;
@@ -157,40 +155,5 @@ public class AppController {
 //			return feedRepo.findAll();
 //			
 //		}
-//		
-//		
-//		//PROMOTION 
-//		@Autowired
-//		private PromotionRepository promoRepo;
-//		
-//		@GetMapping("/allpromotions")
-//		private List<Promotion> getAllPromotions(){
-//			List<Promotion> promoList =promoRepo.findAll();
-//			System.out.println(promoList);
-//			return promoRepo.findAll();
-//		}
-//		
-//		@GetMapping("/promotionbyid/{id}")
-//		public Optional<Promotion> getPromotionById(@PathVariable int id) {
-//			return promoRepo.findById(id);
-//		}
-//		
-//		@PostMapping("/createpromotion")
-//		private Promotion createPromotion(@RequestBody Promotion promo) {
-//			System.out.println(promo);
-//			return promoRepo.save(promo);
-//		}	
-//		
-//		@PutMapping("/updatepromotion")
-//		public Promotion updarePromotion(@RequestBody Promotion promotion) {
-//			return promoRepo.save(promotion);
-//		}
-//		
-//	
-//		@DeleteMapping("/deletepromotion/{id}")
-//		public ResponseEntity<HttpStatus> deletePromotion(@PathVariable int id) {
-//			promoRepo.deleteById(id);
-//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//		}
-	
+
 }

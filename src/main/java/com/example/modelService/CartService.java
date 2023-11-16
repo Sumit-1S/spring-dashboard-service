@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,6 +28,7 @@ import com.model.PolicyOwnedRequest;
 import com.model.Status;
 
 @Service
+@CrossOrigin("http://localhost:3002")
 public class CartService {
 
 	@Autowired
@@ -44,14 +46,14 @@ public class CartService {
     }
 	
 	public CartEntity findPolicyByClient(String clientUsername) {
-		String cartServiceURL = "http://localhost:8030/insuranceCart/getCartByUsername/"+clientUsername;
+		String cartServiceURL = "http://localhost:8040/insuranceCart/getCartByUsername/"+clientUsername;
 		ResponseEntity<CartEntity> cartResponse = restTemplate.getForEntity(cartServiceURL, CartEntity.class);
 		CartEntity cart = cartResponse.getBody();
 		return cart;
 	}
 
 	public String purchasePolicy(String clientUsername,PolicyOwnedRequest ownedRequest) {
-		String cartServiceURL = "http://localhost:8030/insuranceCart/getCartByUsername/"+clientUsername;
+		String cartServiceURL = "http://localhost:8040/insuranceCart/getCartByUsername/"+clientUsername;
 		ResponseEntity<CartEntity> cartResponse = restTemplate.getForEntity(cartServiceURL, CartEntity.class);
 		CartEntity cart = cartResponse.getBody();
 		
@@ -65,7 +67,7 @@ public class CartService {
 		List<PolicyOwned> policyOwnedList = new ArrayList();
 		for(int i=0;i<policyArr.length;i++) {
 			Policy policy = policyArr[i]; 
-			String discountServiceURL = "http://localhost:8020/discountService/getDiscount/"+policy.getPolicyId();
+			String discountServiceURL = "http://localhost:8025/discountService/getDiscount/"+policy.getPolicyId();
 			ResponseEntity<Discount[]> discountResponse = restTemplate.getForEntity(discountServiceURL, Discount[].class);
 			System.out.println(discountResponse.getBody());
 			PolicyOwned policyOwned = new PolicyOwned();
@@ -88,7 +90,8 @@ public class CartService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
 			HttpEntity<String> request = new HttpEntity<String>(json, headers);
-			policyOwnedResponse = restTemplate.postForObject(policyOwnedServiceURL, request, String.class);			
+			policyOwnedResponse = restTemplate.postForObject(policyOwnedServiceURL, request, String.class);	
+			restTemplate.delete("http://localhost:8040/insuranceCart/deleteCart/"+clientUsername);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
